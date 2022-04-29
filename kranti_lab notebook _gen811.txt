@@ -1,0 +1,475 @@
+gen811_notebook
+#if you're in root directory cd into this:
+/mnt/c/Users/KRANTI/Desktop/Workspace_GEN811
+/mnt/c/Users/KRANTI/Desktop/kranti_811
+/mnt/c/Users/KRANTI/Desktop/kranti_811
+#printing working directory
+pwd
+
+# this cammand will tell me which files are in the directory
+ls
+
+# this cammand to delete files
+rm 
+
+# this cammand is to recheck deleted files
+ls
+ 
+# this cammand is to make directory
+mkdir kranti_g
+
+# this cammand is to check the content of the directory
+ls
+
+# this cammand is to change directory
+cd
+
+# this comand is to confirm directory
+pwd
+
+# this is cammand is to move out of directory
+cd ../
+
+# this cammand is to see files in order
+ls -lrth
+
+#list files in the order, shows who owns file and file size 
+ ls -lstrhl
+ls -lstrhl
+
+# manual page
+man ls
+
+# Relative Path
+# within the current working directory
+
+# Absolute Path(/)
+cd /mnt/c/Users/KRANTI/Desktop/kranti_811
+#this will take you to your Root
+# then you can navigate through your path.  
+
+# head for first 
+head SRR097977.fastq 
+
+# shortcut to home directory
+cd ~ 
+
+# Echo will return whatever you type in
+echo
+
+# lab 3 notes
+pwd
+
+
+# to go to two directories back
+ cd ../../
+
+ # this command is to go to home and desktop directory
+cd $Home/Desktop
+
+#cd shell_data
+cd shell_data
+
+# reletive PATH
+within the cureent working directory
+
+# to see hidden files in the folder
+ls -a 
+
+# to see hidden files in relative path 
+ls -a shell_data
+
+# for untrimmed Fastq
+cd untrimmed_fastq
+
+# PSI='line' 
+# to change things to lines or $
+
+#to clean up terminal
+clear
+
+# to remove directory
+rm -r
+ 
+cd 
+~ echo
+cd Desktop
+PS1='$'
+# reaveals hidden files in wd
+ls -a  
+could not find hidden files
+#wildcat (*)
+ls *977.fastq
+ls*
+echo *fastq
+ls /Users/KRANTI/Applications/c*
+# this cammand is to printout previous history
+ history
+ # to clrar hit clear
+ ctrl+ c (cancle)ls
+ # this cammand is to find previous cammand
+history | grep 'ssh' 
+history | grep 'cd'
+grep 'ATAT' SRRO97977.fastq
+grep 'ATAT  SRRO97977.fastq | grep 'AAAAG'
+wc SRRO97977.fastq
+#
+wc-l SRRO97977.fastq
+
+# this cammand is to doublegrepp
+grep 'ATAT' SRRO97977.fastq | grep 'AAAAG' | wc -l 
+
+lab 4 notes
+pwd 
+/mnt/c/Users/KRANTI/Desktop/Workspace_GEN811
+to get to the sra _metadata using abosute path
+cd /mnt/c/Users/KRANTI/Desktop/Workspace_GEN811/shell_data/sra_metadata
+# use RELATIVE PATH to navigate to the untrimmed_fastq direct
+cd ../untrimmed_fastq
+
+
+##New cammand -nano: creates a new file or opens a file for writing later
+# create a new file named newfile.txt in the untrimmed_fastq directory
+nano newfile.txt # create a file with that name
+nano # creates a file that you need to name later
+
+to open the file to make sure this worked 
+## new cammand -less: open files for reading (talk about head vs cat vs less)
+less newfile.txt ( opens a file for reading, press q to exit)
+
+## cat newfile.txt ( prints the whole file to the screen)
+## head newfile.txt ( prints the first 10 file lines to the screen)
+
+## add more text to newfile.txt using nano
+nano newfile.txt
+
+## new cammand -mkdir: creates a new directory/folder
+# create a new directory named tmp_files
+mkdir tmp_files
+mkdir ../sra_metadata/tmp_files
+
+## mkdir ../sra_metadata/tmp_files
+# cd ../sra_metadata/
+
+#cd ../untrimmed_fastq
+
+### new cammand -mv:moves files
+## move the newfile.txt to the tmp_files directory - can do absolute and relative PATH
+mv newfile.txt tmp_files
+
+### copy (cp)
+to make a copy of one of our FASTQ files using the cp command.
+Navigate to the shell_data/untrimmed_fastq directory and enter:
+cp SRR098026.fastq SRR098026-copy.fastq
+
+
+## review cat,grep,wc,and pipes
+## first take a look at the fastq files
+## shoold we use the less,cat or head cammand?
+head SRR097977.fastq
+cat SRR097977.fastq
+less SRR097977.fastq
+
+## figure out how many different reads have in one of our fastq file 
+grep to find match or searching tool
+pipe | to run multiple cammand
+grep "@" SRR097977.fastq
+grep "@" SRR097977.fastq | wc -l # to check how mwny reads in the fastq file 
+274 different reads
+# grep "@" SRR098026.fastq | wc -l
+
+
+## we can put this different reads of count information into new file 
+
+grep "@" SRR097977.fastq | wc -l > fastq_count.txt  overwritting   eg echo "N" > KK_G
+grep "@" SRR098026.fastq | wc -l >> fastq_count.txt appendingcd    eg echo "N" >> KK_G
+
+
+lets make a folder in kranti_811 specifically for fastq files
+
+to naviagate _gen811
+###cd ../../.. relative path
+cd /mnt/c/Users/KRANTI/Desktop/Workspace_GEN811   absolute path
+
+## create a new directory named fastq_files
+mkdir fastq_files
+
+###to see the date when we have created the file
+## ls -l 
+
+### new cammand -cp: copies file 
+## without navigating back to the untrimmed_fastq directory, copy all fastq files to this directory
+this is where wildcards come in handy 
+copy all fastq files in untrimmed_fastq directory in fastq_files
+cp shell_data/untrimmed_fastq/*.fastq fastq_files
+
+to check cd in to fastq_files
+ls to see
+
+# now navigate to the tmp_fileswe created in the untrimmed_fastq directory
+cd /mnt/c/Users/KRANTI/Desktop/Workspace_GEN811/shell_data/untrimmed_fastq/tmp_files
+
+##3 new cammand 
+## rm to delete files
+## ctrl c if it asks for a password
+
+## final ls -l in gen 811 folder to show all the files/directories
+##cd ../../../.. 
+## ls -l
+
+\
+-
+labnotebook 5
+# For the practical: Please put 'cd /absolute/path/to/gen711' at the top of your notes pages
+
+## lab 5 notebook 
+Practice practical  
+
+### Change your working directory to your gen711 folder with an absolute path
+cd /mnt/c/Users/KRANTI/Desktop/Workspace_GEN811
+
+
+### Change your working directory to the 'shell data' folder
+cd shell_data/untrimmed_fastq
+
+## how many lines do each of the fastq have in this directory 
+inefficient way
+wc -l SRR098026.fastq #996
+wc -l SRR097977.fastq #996
+efficent way 
+wc -l *.fastq 
+there are 4 lines for each read in a fastq file so if we have 996 lines we have 996/4 = 249 reads
+
+##How many sequences are there in SRR098026.fastq? Remember that every sequence is formed by four lines.
+wc -l
+996 
+996/4
+
+# to count words 
+wc file name
+
+##to find number of lines or sequences in the file
+wc -l
+
+How many sequences in SRR098026.fastq contain at least 3 consecutive Ns?
+grep "NNN" SRR098026.fastq | wc -l
+
+
+### Use grep to search for a bad read in SRR098026.fastq( any read with 15 uncalled bases in a row )
+
+grep "NNNNNNNNNNNNNNN" SRR098026.fastq
+
+### Use the 'B' option to get line above each match 
+
+grep options -B (before) and -A (after)
+
+grep -B1 "NNNNNNNNNNNNNNN" SRR098026.fastq
+
+### How many lines in the grep output belong to a read?
+2 lines
+
+### How many lines in the original fastq belong to a read?
+head SRR098026.fastq
+  or 
+less SRR098026.fastq
+4 lines (2 header lines,1 base calls, 1 base call quality)
+(enter q to get out of the file)
+
+### Use the 'A' and 'B' options with grep to return the read and all 4 lines for each match
+grep -A2 -B1 "NNNNNNNNNNNNNNN" SRR098026.fastq
+
+### Redirect the bad reads in SRR098026.fastq to a file called bad_reads.fastq 
+
+grep -A2 -B1 "NNNNNNNNNNNNNNN" SRR098026.fastq > bad_reads.fastq
+grep -A2 -B1 "NNNNNNNNNNNNNNN" SRR098026.fastq > SRR098026_bad_reads.fastq
+
+### Determine how many lines are in bad_reads.fastq
+wc -l SRR098026_bad_reads.fastq
+
+### Redirect the bad reads for both fastqs into bad_reads.txt at the same time
+hint - use globe (*)
+
+
+grep -A2 -B1 "NNNNNNNNNNNNNNN" *fastq > bad_reads.fastq
+
+### Determine how many bad read lines are in each of the fastq lines, and compare that
+ with the number of lines in bad_reads.fastq
+
+ How many lines do each of the fastqs have in this directory?
+
+wc -l *.fastq
+
+###each read should have 4 lines per match but foe some reason,fastq has 401 lines we need to find out what happend.
+Have a look in the file to find out what is wrong 
+less bad_reads.fastq
+
+scroll all the way to thye bottom with less 
+  or 
+tail bad_reads.fastq
+
+SRR098026.fastq-!!!!!!!!!!!#!#!!#!!!!!!!!!!!!!!!!!!
+SRR098026.fastq-@SRR098026.99 HWUSI-EAS1599_1:2:1:0:833 length=35
+SRR098026.fastq:NNNNNNNNNNNCNCNNTNNNNNNNNNNNNNNNNNN
+SRR098026.fastq-+SRR098026.99 HWUSI-EAS1599_1:2:1:0:833 length=35
+SRR098026.fastq-!!!!!!!!!!!#!#!!#!!!!!!!!!!!!!!!!!!
+--
+SRR098026.fastq-@SRR098026.177 HWUSI-EAS1599_1:2:1:1:2025 length=35
+SRR098026.fastq:CNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+SRR098026.fastq-+SRR098026.177 HWUSI-EAS1599_1:2:1:1:2025 length=35
+SRR098026.fastq-#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+The '-' doesnt belong here
+
+use reverse grep to remove the lines that 
+
+grep -A2 -B1 "NNNNNNNNNNNNNNN" SRR098026.fastq | grep -v '^\-\-' > bad_reads.fastq
+
+the '-' is a special character similar to '*' and '|'
+if we use a 
+### Use a reverse grep to remove the lines that 
+grep -A2 -B1 "NNNNNNNNNNNNNN" SRR098026.fastq | grep -v "^\-\-" > bad_reads.fastq  
+
+
+### Add your name to the bottom of the bad_reads.fastq 
+nano bad_reads.fastqqq
+
+name it and check with less if it worked
+      or
+echo "kranti g " >> bad_reads.fastq
+
+### Add your name to the top of the bad_reads.fastq 
+use nano bad_reads.fastq
+ckeck with less if it worked 
+
+### Make a script that makes a file of bad reads 
+
+###Change the permissions on all of your backup files to be write-protected.
+chmod -w backup/*-backup.fastq
+
+### change the permissions of the file and run the script
+chmod 755 file_name
+
+### add your name to the end of new bad reads file
+ls > list.txt or use nano 
+### Run md5sum on scripted_bad_reads.txt and write the output to my_md5sum.txt
+
+
+List all of the files in /usr/bin that start with the letter ‘c’.   ls /usr/bin/c*
+List all of the files in /usr/bin that contain the letter ‘a’.     ls /usr/bin/*a* 
+List all of the files in /usr/bin that end with the letter ‘o’.    ls /usr/bin/*o
+
+List all of the files in /usr/bin that contain the letter ‘a’ or the letter ‘c’.    ls /usr/bin/*[ac]*
+
+grep is a powerful search tool with many options for customization.
+>, >>, and | are different ways of redirecting output.
+command > file redirects a command’s output to a file.
+command >> file redirects a command’s output to a file without overwriting the existing contents of the file.
+command_1 | command_2 redirects the output of the first command as input to the second command.
+
+
+Lab notebook 7 (04012022)
+  quiime2 onlhy for marker gene analysis
+  quiime2 dependent on anaconda
+  taxanomy- uses a reference genome
+  ITS1 and ITS2 -VARIABLE REGION
+  SSU and LSU -conserved REGION
+  Alpha rarefaction plotting-use to make sure you have enough sequencing coverage for each samples so we dont add more
+  obseved ASVS with increasing sequencing depth
+  library size -
+  normalization- only good idea if all ofyour samples have similae # of reads; uncommon
+  ASV -amplicon sequence variant - 99% similarity
+  OTU - Operatiponal taxanomoc unit -97% similarity
+
+  Quiime tutorial 
+  what are important formats?
+  quiime tools import --show-importable-formats
+  quiime tools import --show -importable-types
+
+  downloading reads into server
+  wget 
+  wget
+  making new directory for reads
+  mkdir emp-single-end-sequences
+  ## downloading barcoads and sequences
+  ls emp-single-end-sequences
+  ##download sequences
+
+  ## how to get reads into quiime?
+  #importing into quiime
+   quiime tools peak emp-single-end-sequences.qza
+
+   ##check if the import worked
+   quiime tools peek emp-single-sequences.qza
+   ##demultiplexing step
+   quiime
+
+Labnotebook 8 04/08/2022
+installed mini conda 
+curl -sL \
+  "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh" > \
+  "Miniconda3.sh"
+
+For project
+I will be analyzing DNA sequencing data for C.elegans knockout strains. 
+
+
+04-15-2022
+
+Get githob account
+
+# get conda installation
+
+# add the channels
+conda config --add channels defaults
+conda config --add channels bioconda
+conda config --add channels conda-forge
+
+# create my env
+conda create -n KRANTI python bwa fastqc
+
+## might give people error
+conda activate KRANTI
+
+ PROJECT UPDATE
+collected data from genome center
+
+##link to github
+
+https://github.com/galandekranti87/Celegans
+
+04/22/2022
+ 
+I got access to RON 
+Requested fastq files from the genome center, waiting for that.
+
+pipeline for the project
+Sample Workflow - Raw Reads:
+Quality Check (FASTQC)
+Count # of Reads
+Adapter and Quality Trimming
+Read Mapping:Generate SAM/BAM files
+Coverage Analysis:
+Variant Calling:Generates VCF file
+
+
+labnotebook 11
+How to use github
+in the github
+project name
+background
+methods
+findings
+
+downloading refference genome of N2 
+PS C:\Users\KRANTI\Desktop\kranti_811> sftp kkg1010@ron.sr.unh.edu
+kkg1010@ron.sr.unh.edu's password: 
+Connected to ron.sr.unh.edu.
+sftp> put C:\Users\KRANTI\Downloads\GCF_000002985.6_WBcel235_genomic.fna
+Uploading C:/Users/KRANTI/Downloads/GCF_000002985.6_WBcel235_genomic.fna to /home/users/kkg1010/GCF_000002985.6_WBcel235_genomic.fna
+C:/Users/KRANTI/Downloads/GCF_000002985.6_WBcel235_genomic.fna                          100%   97MB  22.5MB/s   00:04     
+sftp> 
+
+trimmomatic X.fastq
+bwa-R reference genome. fa trimmed_X.fastq > file.bam
+bwa-R reference genome. fa -f trimmed_X.R1_fastq -r trimmed_R2fast > file.bam
+
