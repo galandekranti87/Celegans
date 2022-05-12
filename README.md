@@ -9,3 +9,8 @@
 Whole genome sequencing done by genome center, UNH.
 Files were in fastq.gz
 To work on this project i got access to RON.
+
+
+# Findings
+
+
