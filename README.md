@@ -14,24 +14,26 @@ I have used Joe's bash tutorial,here is the link:https://github.com/Joseph7e/MDI
 
 Command lines used for analysis-
 
-##Activated the genomics environment
+##Activated the genomics environment-
 conda activate genomics
 
-##Counted number of raw reads
+##Counted number of raw reads-
 zgrep -c '^@' Sample*/*R1*
 
-##Counted reads by dividing 4
+##Counted reads by dividing 4-
 zcat Sample*/*_R1_* | wc -l
-##Adapter and Quality Trimming
-Run trimmomatic
-Ran Joe's wrapper script
-trim_scriptV2.sh Sample_*/*_R1_* Sample_*/*_R2_*
-##If you want to see inside the program you can take a look.
-which trim_scriptV2.sh
-more /usr/local/bin/trim_scriptV2.sh
+
+##Adapter and Quality Trimming,Run trimmomatic/Ran Joe's wrapper script-trim_scriptV2.sh Sample_*/*_R1_* Sample_*/*_R2_*
+
+##If you want to see inside the program you can take a look-which trim_scriptV2.sh  more /usr/local/bin/trim_scriptV2.sh
+
 ##Run fastqc to compare with new trimmed reads to compare with the original html and the new one to see the differences (Figure.1)
+-fastqc 1_S1_L002_R1_001.fastq.gz  1_S1_L002_R2_001.fastq.gz -o fastqc_raw-reads
+
 # Findings
 ![Raw fastqc](https://user-images.githubusercontent.com/103779987/168194324-a9f78b0a-2b65-4b00-aab7-6fccfead0494.JPG)
+Raw fastqc
 ![Trmmed fastqc](https://user-images.githubusercontent.com/103779987/168194349-8c567f58-3fb5-4481-ba98-3f1b467f1053.JPG)
+Trimmed fastqc
 
 <img width="960" alt="1_ko_project" src="https://user-images.githubusercontent.com/103779987/168190781-29b67e93-cb2a-4552-82d1-d857c2017ecb.PNG">
