@@ -13,4 +13,3 @@ To work on this project i got access to RON.
 
 # Findings
 
-
