@@ -90,5 +90,7 @@ Noticed that the fastqc report 'failed' for adapter content. Trimmomatic program
 <img width="960" alt="1_ko_project" src="https://user-images.githubusercontent.com/103779987/168190781-29b67e93-cb2a-4552-82d1-d857c2017ecb.PNG">
 Figure .3
 
-I used IGV to visualize the data ( gene annotations, and per sample coverage profiles). To see the gene location I have used reference genome. general feature format(gff) and .bam and bam.bai files.
+I used IGV to visualize the data ( gene annotations, and per sample coverage profiles). To see the gene location I have used reference genome. general feature format(gff) and .bam and bam.bai files. Samples 1 had a pde-1 knockout that resulted in ~0X coverage.
+ 
+
 
