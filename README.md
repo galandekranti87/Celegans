@@ -16,7 +16,7 @@ I have used Joe's bash tutorial,here is the link:https://github.com/Joseph7e/MDI
 
 pipeline for the project
 
-get the data from genome center
+## get the data from genome center
 
 Raw Reads:Count # of Reads
 
