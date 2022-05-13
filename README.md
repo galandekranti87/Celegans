@@ -35,6 +35,9 @@ Visualized on IGV
 #### Activated the genomics environment-
 conda activate genomics
 
+#### Downloaded refference genome:https://www.ncbi.nlm.nih.gov/assembly/GCF_000002985.6
+sftp> put C:\Users\KRANTI\Downloads\GCF_000002985.6_WBcel235_genomic.fna
+
 #### Counted number of raw reads-
 zgrep -c '^@' Sample*/*R1*
 
@@ -102,6 +105,26 @@ Noticed that the fastqc report 'failed' for adapter content. Trimmomatic program
 Figure .3
 
 I used IGV to visualize the data ( gene annotations, and per sample coverage profiles). To see the gene location I have uploaded reference genome. general feature format(gff) and .bam and bam.bai files. Samples 1 had a pde-1 knockout that resulted in ~0X coverage.
+
+## Coverage analysis
+NC_003279.8     0       173452  15072434        0.0115079
+NC_003279.8     1       448705  15072434        0.0297699
+NC_003279.8     2       891828  15072434        0.0591695
+NC_003279.8     3       1292804 15072434        0.0857727
+NC_003279.8     4       1602585 15072434        0.106326
+NC_003279.8     5       1759873 15072434        0.116761
+NC_003279.8     6       1754549 15072434        0.116408
+NC_003279.8     7       1618669 15072434        0.107393
+NC_003279.8     8       1393796 15072434        0.0924732
+NC_003279.8     9       1133946 15072434        0.0752331
+NC_003279.8     10      876022  15072434        0.0581208
+NC_003279.8     11      645540  15072434        0.0428292
+NC_003279.8     12      467348  15072434        0.0310068
+NC_003279.8     13      326575  15072434        0.021667
+NC_003279.8     14      222378  15072434        0.014754
+NC_003279.8     15      146765  15072434        0.00973731
+
+
  
 
 
