@@ -14,9 +14,9 @@ To work on this project i got access to RON.
 
 I have used Joe's bash tutorial,here is the link:https://github.com/Joseph7e/MDIBL-T3-WGS-Tutorial#activate-the-genomics-environment
 
-pipeline for the project
+### pipeline for the project
 
-## get the data from genome center
+### Get the data from genome center
 
 Raw Reads:Count # of Reads
 
@@ -30,9 +30,9 @@ Coverage Analysis: Using samtools
 
 Visualized on IGV
 
-Command lines used for analysis-
+### Command lines used for analysis-
 
-##Activated the genomics environment-
+####Activated the genomics environment-
 conda activate genomics
 
 ##Counted number of raw reads-
