@@ -6,13 +6,13 @@ It is estimated that 8-15% of all crop losses ($80-100 billion annual damage) ar
 To evaluate the potential of each nematode PDE gene as a target for pharmacological intervention, we created C. elegans strains with each PDE gene [pde1, pde2, pde3, pde4, pde-5 (human PDE10), pde-6 (human PDE8)] eliminated (“knocked out”) by gene editing with CRISPR/Cas9. Genomic sequencing is completed to verify targeted gene disruptione by genome center at UNH.For this project i have verified (pde1 and pde6) knockouts.
     
 # Methods
-#####Whole genome sequencing of c.elegans is done at genome center,UNH.
+##### Whole genome sequencing of c.elegans is done at genome center,UNH.
 
-#####Files were in fastq.gz
+##### Files were in fastq.gz
 
-#####To work on this project I got access to RON.
+##### To work on this project I got access to RON.
 
-#####I have used Joe's bash tutorial,here is the link:https://github.com/Joseph7e/MDIBL-T3-WGS-Tutorial#activate-the-genomics-environment
+##### I have used Joe's bash tutorial,here is the link:https://github.com/Joseph7e/MDIBL-T3-WGS-Tutorial#activate-the-genomics-environment
 
 ### pipeline for the project
 
