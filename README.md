@@ -32,16 +32,17 @@ Visualized on IGV
 
 ### Command lines used for analysis-
 
-####Activated the genomics environment-
+#### Activated the genomics environment-
 conda activate genomics
 
-##Counted number of raw reads-
+#### Counted number of raw reads-
 zgrep -c '^@' Sample*/*R1*
 
-##Counted reads by dividing 4-
+#### Counted reads by dividing 4-
 zcat Sample*/*_R1_* | wc -l
 
-##Adapter and Quality Trimming,Run trimmomatic/Ran Joe's wrapper script-trim_scriptV2.sh Sample_*/*_R1_* Sample_*/*_R2_*
+#### Adapter and Quality Trimming,Run trimmomatic/Ran Joe's wrapper script-
+trim_scriptV2.sh Sample_*/*_R1_* Sample_*/*_R2_*
 
 ##If you want to see inside the program you can take a look-which trim_scriptV2.sh  more /usr/local/bin/trim_scriptV2.sh
 
