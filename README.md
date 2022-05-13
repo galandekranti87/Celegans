@@ -75,7 +75,12 @@ gen_input_table.py  --isbedfiles $fasta coverage.out >  coverage_table.tsv
 
 ##This outputs a simple file with two columns, the contig header and the average coverage.
 
-# Findings
+# Fastqc report
+Here is the link for full report:
+file:///C:/Users/KRANTI/Desktop/c%20elegans%20trimmed%20graph%20to%20compare/fastqc_raw-reads/Raw%20Read%20-%201_S1_L002_R1_001_fastqc.html
+file:///C:/Users/KRANTI/Desktop/c%20elegans%20trimmed%20graph%20to%20compare/fastqc_raw-reads/Raw%20Read%20-%201_S1_L002_R2_001_fastqc.html
+file:///C:/Users/KRANTI/Desktop/c%20elegans%20trimmed%20graph%20to%20compare/trimmed-reads/Trimmed%20Reads%20-%201_S1_L002_R2_001_fastqc.html
+file:///C:/Users/KRANTI/Desktop/c%20elegans%20trimmed%20graph%20to%20compare/trimmed-reads/Trimmed%20Reads%20-%201_S1_L002_R1_001_fastqc.html
 ## For pde1 gene knockout strain
 
 ![Raw fastqc](https://user-images.githubusercontent.com/103779987/168194324-a9f78b0a-2b65-4b00-aab7-6fccfead0494.JPG)    -Figure.1 Raw fastqc
@@ -87,7 +92,7 @@ Noticed that the fastqc report 'failed' for adapter content. Trimmomatic program
 ![Rwa_reads_1ko_2Adaptor content](https://user-images.githubusercontent.com/103779987/168314853-a1c2d355-6be5-4d95-a25f-d31393b648c4.JPG) Figure.2 Fastqc
 ![Trimmed_reads_1ko_Adaptor content](https://user-images.githubusercontent.com/103779987/168315037-01438a11-4338-41c6-b80a-24863ff6e878.JPG) Figure.2 Trimmomatic
 
-
+# Findings
 <img width="960" alt="1_ko_project" src="https://user-images.githubusercontent.com/103779987/168190781-29b67e93-cb2a-4552-82d1-d857c2017ecb.PNG">
 Figure .3
 
