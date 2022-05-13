@@ -87,7 +87,8 @@ Noticed that the fastqc report 'failed' for adapter content. Trimmomatic program
 ![Trimmed_reads_1ko_Adaptor content](https://user-images.githubusercontent.com/103779987/168315037-01438a11-4338-41c6-b80a-24863ff6e878.JPG) Figure.2 Trimmomatic
 
 
-<img width="960" alt="1_ko_project" src="https://user-images.githubusercontent.com/103779987/168190781-29b67e93-cb2a-4552-82d1-d857c2017ecb.PNG"> Figure .3
+<img width="960" alt="1_ko_project" src="https://user-images.githubusercontent.com/103779987/168190781-29b67e93-cb2a-4552-82d1-d857c2017ecb.PNG">
+Figure .3
 
-I used IGV to visualize the data ( gene annotations, and per sample coverage profiles).
+I used IGV to visualize the data ( gene annotations, and per sample coverage profiles). To see the gene location I have used reference genome. general feature format(gff) and .bam and bam.bai files.
 
