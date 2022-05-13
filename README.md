@@ -79,16 +79,7 @@ gen_input_table.py  --isbedfiles $fasta coverage.out >  coverage_table.tsv
 ##This outputs a simple file with two columns, the contig header and the average coverage.
 
 ## Fastqc report
-Here is the link for full report:
-file:///C:/Users/KRANTI/Desktop/c%20elegans%20trimmed%20graph%20to%20compare/fastqc_raw-reads/Raw%20Read%20-%201_S1_L002_R1_001_fastqc.html
 
-file:///C:/Users/KRANTI/Desktop/c%20elegans%20trimmed%20graph%20to%20compare/fastqc_raw-reads/Raw%20Read%20-%201_S1_L002_R2_001_fastqc.html
-
-file:///C:/Users/KRANTI/Desktop/c%20elegans%20trimmed%20graph%20to%20compare/trimmed-reads/Trimmed%20Reads%20-%201_S1_L002_R2_001_fastqc.html
-
-file:///C:/Users/KRANTI/Desktop/c%20elegans%20trimmed%20graph%20to%20compare/trimmed-reads/Trimmed%20Reads%20-%201_S1_L002_R1_001_fastqc.html
-
-file:///C:/Users/KRANTI/Desktop/c%20elegans%20trimmed%20graph%20to%20compare/trimmed-reads/Trimmed%20Reads%20-%201_S1_L002_R1_001_fastqc.html
 ## For pde1 gene knockout strain
 
 ![Raw fastqc](https://user-images.githubusercontent.com/103779987/168194324-a9f78b0a-2b65-4b00-aab7-6fccfead0494.JPG)    -Figure.1 Raw fastqc
