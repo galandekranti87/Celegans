@@ -14,7 +14,7 @@ To evaluate the potential of each nematode PDE gene as a target for pharmacologi
 
 ##### I have used Joe's bash tutorial,here is the link:https://github.com/Joseph7e/MDIBL-T3-WGS-Tutorial#activate-the-genomics-environment
 
-### pipeline for the project
+### Pipeline for the project
 
 Get the data from genome center
 
@@ -47,7 +47,7 @@ zcat Sample*/*_R1_* | wc -l
 #### Adapter and Quality Trimming,Run trimmomatic/Ran Joe's wrapper script-
 trim_scriptV2.sh Sample_*/*_R1_* Sample_*/*_R2_*
 
-#### If you want to see inside the program you can take a look-
+#### To check inside the program-
 which trim_scriptV2.sh  
 more /usr/local/bin/trim_scriptV2.sh
 
@@ -55,32 +55,29 @@ more /usr/local/bin/trim_scriptV2.sh
 -fastqc 1_S1_L002_R1_001.fastq.gz  1_S1_L002_R2_001.fastq.gz -o fastqc_raw-reads
 
 #### Read mapping 
-Step 1: Index your reference genome. This is a requirement before read mapping.
+Index your reference genome
 bwa index $fasta
 
 #### Map the reads and construct a SAM file-
 bwa mem -t 24 $fasta $forward $reverse > raw_mapped.sam
 
-#### view the file with less, note that to see the data you have to scrolled down past all the headers (@SQ).
+#### view the file with less 
 less -S raw_mapped.sam
 
 #### Construct a coverage table using samtools 
 
-#### Remove sequencing reads that did not match to the assembly and convert the SAM to a BAM-samtools view -@ 24 -Sb  raw_mapped.sam  | samtools sort -@ 24 - sorted_mapped
+#### Remove sequencing reads that did not match to the assembly and convert the SAM to a BAM
+samtools view -@ 24 -Sb  raw_mapped.sam  | samtools sort -@ 24 - sorted_mapped
 
-##Examine how many reads mapped with samtools-samtools flagstat sorted_mapped.bam
+#### Examine how many reads mapped with samtools-
+samtools flagstat sorted_mapped.bam
 
 #### Calculate per base coverage with bedtools,index the new bam file-samtools index sorted_mapped.bam
 bedtools genomecov -ibam sorted_mapped.bam > coverage.out
 
-##Calculate per contig coverage with gen_input_table.py
-gen_input_table.py  --isbedfiles $fasta coverage.out >  coverage_table.tsv
-
-##This outputs a simple file with two columns, the contig header and the average coverage.
-
 ## Fastqc report
 
-## For pde1 gene knockout strain
+## For Sample_1
 
 ![Raw fastqc](https://user-images.githubusercontent.com/103779987/168194324-a9f78b0a-2b65-4b00-aab7-6fccfead0494.JPG)    -Figure.1 Raw fastqc
 ![Trmmed fastqc](https://user-images.githubusercontent.com/103779987/168194349-8c567f58-3fb5-4481-ba98-3f1b467f1053.JPG)-Figure.1 Trimmed fastqc
