@@ -34,8 +34,9 @@ zcat Sample*/*_R1_* | wc -l
 
 ##Read mapping# Step 1: Index your reference genome. This is a requirement before read mapping.
 bwa index $fasta
-##Step 2: Map the reads and construct a SAM file.
-bwa mem -t 24 $fasta $forward $reverse > raw_mapped.sam
+
+##Step 2: Map the reads and construct a SAM file-bwa mem -t 24 $fasta $forward $reverse > raw_mapped.sam
+
 ##view the file with less, note that to see the data you have to scrolled down past all the headers (@SQ).
 less -S raw_mapped.sam
 
