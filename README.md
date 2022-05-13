@@ -14,6 +14,22 @@ To work on this project i got access to RON.
 
 I have used Joe's bash tutorial,here is the link:https://github.com/Joseph7e/MDIBL-T3-WGS-Tutorial#activate-the-genomics-environment
 
+pipeline for the project
+
+get the data from genome center
+
+Raw Reads:Count # of Reads
+
+Quality Check (FASTQC)
+
+Adapter and Quality Trimming
+
+Read Mapping:Generate SAM/BAM files
+
+Coverage Analysis: Using samtools
+
+Visualized on IGV
+
 Command lines used for analysis-
 
 ##Activated the genomics environment-
