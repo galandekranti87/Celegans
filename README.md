@@ -79,4 +79,7 @@ gen_input_table.py  --isbedfiles $fasta coverage.out >  coverage_table.tsv
 ![Raw fastqc](https://user-images.githubusercontent.com/103779987/168194324-a9f78b0a-2b65-4b00-aab7-6fccfead0494.JPG)    -Figure.1 Raw fastqc
 ![Trmmed fastqc](https://user-images.githubusercontent.com/103779987/168194349-8c567f58-3fb5-4481-ba98-3f1b467f1053.JPG)-Figure.1 Trimmed fastqc
 
+## Comapared fastqc and trimmomatic
+Noticed that the fastqc report 'failed' for adapter content. Trimmomatic programme used to remove the adapters with Joe's wrraper script
+
 <img width="960" alt="1_ko_project" src="https://user-images.githubusercontent.com/103779987/168190781-29b67e93-cb2a-4552-82d1-d857c2017ecb.PNG">
