@@ -13,3 +13,4 @@ To work on this project i got access to RON.
 
 # Findings
 
+<img width="960" alt="1_ko_project" src="https://user-images.githubusercontent.com/103779987/168190781-29b67e93-cb2a-4552-82d1-d857c2017ecb.PNG">
