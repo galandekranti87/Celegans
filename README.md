@@ -30,6 +30,14 @@ zcat Sample*/*_R1_* | wc -l
 ##Run fastqc to compare with new trimmed reads to compare with the original html and the new one to see the differences (Figure.1)
 -fastqc 1_S1_L002_R1_001.fastq.gz  1_S1_L002_R2_001.fastq.gz -o fastqc_raw-reads
 
+##Read mapping# Step 1: Index your reference genome. This is a requirement before read mapping.
+bwa index $fasta
+##Step 2: Map the reads and construct a SAM file.
+bwa mem -t 24 $fasta $forward $reverse > raw_mapped.sam
+##view the file with less, note that to see the data you have to scrolled down past all the headers (@SQ).
+less -S raw_mapped.sam
+
+
 # Findings
 ![Raw fastqc](https://user-images.githubusercontent.com/103779987/168194324-a9f78b0a-2b65-4b00-aab7-6fccfead0494.JPG)    -Figure.1 Raw fastqc
 ![Trmmed fastqc](https://user-images.githubusercontent.com/103779987/168194349-8c567f58-3fb5-4481-ba98-3f1b467f1053.JPG)-Figure.1 Trimmed fastqc
