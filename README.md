@@ -13,10 +13,13 @@ To work on this project i got access to RON.
 I have used Joe's bash tutorial,here is the link:https://github.com/Joseph7e/MDIBL-T3-WGS-Tutorial#activate-the-genomics-environment
 
 Command lines used for analysis-
+
 ##Activated the genomics environment
 conda activate genomics
+
 ##Counted number of raw reads
 zgrep -c '^@' Sample*/*R1*
+
 ##Counted reads by dividing 4
 zcat Sample*/*_R1_* | wc -l
 ##Adapter and Quality Trimming
