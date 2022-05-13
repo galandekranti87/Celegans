@@ -80,7 +80,7 @@ bedtools genomecov -ibam sorted_mapped.bam > coverage.out
 ## For Sample_1
 
 ![Raw reads vs Trimmed reads](https://user-images.githubusercontent.com/103779987/168401469-7da4add2-b55e-4f06-96eb-75b4c2942a90.JPG)
-Trimmed reads                                                                     Raw reads
+Trimmed reads                                                                                                           Raw reads
 
 
 ![Raw fastqc](https://user-images.githubusercontent.com/103779987/168194324-a9f78b0a-2b65-4b00-aab7-6fccfead0494.JPG)    -Figure.1 Raw fastqc
