@@ -7,7 +7,9 @@ To evaluate the potential of each nematode PDE gene as a target for pharmacologi
     
 # Methods
 Whole genome sequencing of c.elegans is done at genome center,UNH.
+
 Files were in fastq.gz
+
 To work on this project i got access to RON.
 
 I have used Joe's bash tutorial,here is the link:https://github.com/Joseph7e/MDIBL-T3-WGS-Tutorial#activate-the-genomics-environment
@@ -37,6 +39,19 @@ bwa mem -t 24 $fasta $forward $reverse > raw_mapped.sam
 ##view the file with less, note that to see the data you have to scrolled down past all the headers (@SQ).
 less -S raw_mapped.sam
 
+##Construct a coverage table using samtools 
+
+##Remove sequencing reads that did not match to the assembly and convert the SAM to a BAM-samtools view -@ 24 -Sb  raw_mapped.sam  | samtools sort -@ 24 - sorted_mapped
+
+##Examine how many reads mapped with samtools-samtools flagstat sorted_mapped.bam
+
+##Calculate per base coverage with bedtools,index the new bam file-samtools index sorted_mapped.bam
+bedtools genomecov -ibam sorted_mapped.bam > coverage.out
+
+##Calculate per contig coverage with gen_input_table.py
+gen_input_table.py  --isbedfiles $fasta coverage.out >  coverage_table.tsv
+
+##This outputs a simple file with two columns, the contig header and the average coverage.
 
 # Findings
 ![Raw fastqc](https://user-images.githubusercontent.com/103779987/168194324-a9f78b0a-2b65-4b00-aab7-6fccfead0494.JPG)    -Figure.1 Raw fastqc
