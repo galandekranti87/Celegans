@@ -44,26 +44,30 @@ zcat Sample*/*_R1_* | wc -l
 #### Adapter and Quality Trimming,Run trimmomatic/Ran Joe's wrapper script-
 trim_scriptV2.sh Sample_*/*_R1_* Sample_*/*_R2_*
 
-##If you want to see inside the program you can take a look-which trim_scriptV2.sh  more /usr/local/bin/trim_scriptV2.sh
+#### If you want to see inside the program you can take a look-
+which trim_scriptV2.sh  
+more /usr/local/bin/trim_scriptV2.sh
 
-##Run fastqc to compare with new trimmed reads to compare with the original html and the new one to see the differences (Figure.1)
+#### Run fastqc to compare with new trimmed reads to compare with the original html and the new one to see the differences (Figure.1)
 -fastqc 1_S1_L002_R1_001.fastq.gz  1_S1_L002_R2_001.fastq.gz -o fastqc_raw-reads
 
-##Read mapping# Step 1: Index your reference genome. This is a requirement before read mapping.
+#### Read mapping 
+Step 1: Index your reference genome. This is a requirement before read mapping.
 bwa index $fasta
 
-##Step 2: Map the reads and construct a SAM file-bwa mem -t 24 $fasta $forward $reverse > raw_mapped.sam
+#### Map the reads and construct a SAM file-
+bwa mem -t 24 $fasta $forward $reverse > raw_mapped.sam
 
-##view the file with less, note that to see the data you have to scrolled down past all the headers (@SQ).
+#### view the file with less, note that to see the data you have to scrolled down past all the headers (@SQ).
 less -S raw_mapped.sam
 
-##Construct a coverage table using samtools 
+#### Construct a coverage table using samtools 
 
-##Remove sequencing reads that did not match to the assembly and convert the SAM to a BAM-samtools view -@ 24 -Sb  raw_mapped.sam  | samtools sort -@ 24 - sorted_mapped
+#### Remove sequencing reads that did not match to the assembly and convert the SAM to a BAM-samtools view -@ 24 -Sb  raw_mapped.sam  | samtools sort -@ 24 - sorted_mapped
 
 ##Examine how many reads mapped with samtools-samtools flagstat sorted_mapped.bam
 
-##Calculate per base coverage with bedtools,index the new bam file-samtools index sorted_mapped.bam
+#### Calculate per base coverage with bedtools,index the new bam file-samtools index sorted_mapped.bam
 bedtools genomecov -ibam sorted_mapped.bam > coverage.out
 
 ##Calculate per contig coverage with gen_input_table.py
