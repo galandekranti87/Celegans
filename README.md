@@ -9,10 +9,26 @@ To evaluate the potential of each nematode PDE gene as a target for pharmacologi
 Whole genome sequencing of c.elegans is done at genome center,UNH.
 Files were in fastq.gz
 To work on this project i got access to RON.
+
+I have used Joe's bash tutorial,here is the link:https://github.com/Joseph7e/MDIBL-T3-WGS-Tutorial#activate-the-genomics-environment
+
 Command lines used for analysis-
-
-###Activate the genomics environment
-
+##Activated the genomics environment
+conda activate genomics
+##Counted number of raw reads
+zgrep -c '^@' Sample*/*R1*
+##Counted reads by dividing 4
+zcat Sample*/*_R1_* | wc -l
+##Adapter and Quality Trimming
+Run trimmomatic
+Ran Joe's wrapper script
+trim_scriptV2.sh Sample_*/*_R1_* Sample_*/*_R2_*
+##If you want to see inside the program you can take a look.
+which trim_scriptV2.sh
+more /usr/local/bin/trim_scriptV2.sh
+##Run fastqc to compare with new trimmed reads to compare with the original html and the new one to see the differences (Figure.1)
 # Findings
+![Raw fastqc](https://user-images.githubusercontent.com/103779987/168194324-a9f78b0a-2b65-4b00-aab7-6fccfead0494.JPG)
+![Trmmed fastqc](https://user-images.githubusercontent.com/103779987/168194349-8c567f58-3fb5-4481-ba98-3f1b467f1053.JPG)
 
 <img width="960" alt="1_ko_project" src="https://user-images.githubusercontent.com/103779987/168190781-29b67e93-cb2a-4552-82d1-d857c2017ecb.PNG">
