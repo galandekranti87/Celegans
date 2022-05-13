@@ -80,6 +80,7 @@ bedtools genomecov -ibam sorted_mapped.bam > coverage.out
 ## For Sample_1
 
 ![Raw reads vs Trimmed reads](https://user-images.githubusercontent.com/103779987/168401752-a42327e9-10a0-4d14-bf7e-16e72eca3163.JPG)
+Figure.1 Compared raw reads and 
 
 
 ![Raw fastqc](https://user-images.githubusercontent.com/103779987/168194324-a9f78b0a-2b65-4b00-aab7-6fccfead0494.JPG)    -Figure.1 Raw fastqc
@@ -87,6 +88,9 @@ bedtools genomecov -ibam sorted_mapped.bam > coverage.out
 
 ## Comapared fastqc and trimmomatic
 Noticed that the fastqc report 'failed' for adapter content. Trimmomatic programme used to remove the adapters with Joe's wrraper script
+
+![Adaptor content](https://user-images.githubusercontent.com/103779987/168402197-1efcbe07-83c8-42a5-9605-b35b858e2f72.JPG)
+
 
 ![Rwa_reads_1ko_2Adaptor content](https://user-images.githubusercontent.com/103779987/168314853-a1c2d355-6be5-4d95-a25f-d31393b648c4.JPG) Figure.2 Fastqc
 ![Trimmed_reads_1ko_Adaptor content](https://user-images.githubusercontent.com/103779987/168315037-01438a11-4338-41c6-b80a-24863ff6e878.JPG) Figure.2 Trimmomatic
