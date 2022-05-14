@@ -1,0 +1,544 @@
+C.elegans knockout project :
+pipeline for the project
+Get the data from genome center
+Sample Workflow - Raw Reads:
+Quality Check (FASTQC)
+Count # of Reads
+Adapter and Quality Trimming
+Read Mapping:Generate SAM/BAM files
+Coverage Analysis:
+Variant Calling:Generates VCF file
+
+### Recived raw data from genome center
+
+### For log in RON
+ssh kkg1010@ron.sr.unh.edu
+
+### Downloading refference genome of N2 
+PS C:\Users\KRANTI\Desktop\kranti_811> sftp kkg1010@ron.sr.unh.edu
+kkg1010@ron.sr.unh.edu's password: 
+Connected to ron.sr.unh.edu.
+sftp> put C:\Users\KRANTI\Downloads\GCF_000002985.6_WBcel235_genomic.fna
+Uploading C:/Users/KRANTI/Downloads/GCF_000002985.6_WBcel235_genomic.fna to /home/users/kkg1010/GCF_000002985.6_WBcel235_genomic.fna
+C:/Users/KRANTI/Downloads/GCF_000002985.6_WBcel235_genomic.fna                          100%   97MB  22.5MB/s   00:04     
+sftp> 
+
+## made directory 
+mkdir 1_n2_kostrain
+base) kkg1010@ron:~$ mkdir 1_n2_kostrains
+(base) kkg1010@ron:~$ ls
+1_n2_kostrains  211008_A01346_0032_BHFMCNDRXY_16MerRickC_Nem  GCF_000002985.6_WBcel235_genomic.fna
+
+## Kept files zipped
+
+### Counted # of reads
+(base) kkg1010@ron:~/1_n2_kostrains$ zgrep -c '^@' 1_S1_L002_R1_001.fastq.gz
+38944937
+
+(base) kkg1010@ron:~$ cd 211008_A01346_0032_BHFMCNDRXY_16MerRickC_Nem
+(base) kkg1010@ron:~/211008_A01346_0032_BHFMCNDRXY_16MerRickC_Nem$ pwd
+/home/users/kkg1010/211008_A01346_0032_BHFMCNDRXY_16MerRickC_Nem
+(base) kkg1010@ron:~/211008_A01346_0032_BHFMCNDRXY_16MerRickC_Nem$ ls
+10_S7_L002_R1_001.fastq.gz   1_S1_L002_R1_001.fastq.gz  3_S3_L002_R1_001.fastq.gz  6_S6_L002_R1_001.fastq.gz
+10_S7_L002_R2_001.fastq.gz   1_S1_L002_R2_001.fastq.gz  3_S3_L002_R2_001.fastq.gz  6_S6_L002_R2_001.fastq.gz
+1-4_S5_L002_R1_001.fastq.gz  2_S2_L002_R1_001.fastq.gz  4_S4_L002_R1_001.fastq.gz  N2_S8_L002_R1_001.fastq.gz
+1-4_S5_L002_R2_001.fastq.gz  2_S2_L002_R2_001.fastq.gz  4_S4_L002_R2_001.fastq.gz  N2_S8_L002_R2_001.fastq.gz
+
+### Copied files from 211008_A01346_0032_BHFMCNDRXY_16MerRickC_Nem to 1_n2_kostrains
+(base) kkg1010@ron:~/211008_A01346_0032_BHFMCNDRXY_16MerRickC_Nem$ cp 1_S1_L002_R1_001.fastq.gz 1_S1_L002_R2_001.fastq.gz /home/users/kkg1010/1_n2_kostrains/
+(base) kkg1010@ron:~/1_n2_kostrains$ ls
+1_S1_L002_R1_001.fastq.gz  1_S1_L002_R2_001.fastq.gz
+
+## To see sript trim_scriptV2.sh
+(base) kkg1010@ron:~/1_n2_kostrains$ which trim_scriptV2.sh
+/usr/local/bin/trim_scriptV2.sh
+(base) kkg1010@ron:~/1_n2_kostrains$ more /usr/local/bin/trim_scriptV2.sh
+#!/bin/bash
+
+FORWARD=$1
+REVERSE=$2
+ADAPTERS='/home/genome/joseph7e/scripts/adapters.fa'
+
+mkdir trimmed-reads/
+
+o_for="$(basename $FORWARD)"
+o_rev="$(basename $REVERSE)"
+
+trimmomatic PE -threads 8 $FORWARD $REVERSE\
+    trimmed-reads/$o_for trimmed-reads/unpaired-$o_for\
+    trimmed-reads/$o_rev trimmed-reads/unpaired-$o_rev\
+    ILLUMINACLIP:$ADAPTERS:2:30:10:8:true\
+    LEADING:3 TRAILING:3\
+
+### Run Trimmomatic
+(base) kkg1010@ron:~/1_n2_kostrains$ trim_scriptV2.sh 1_S1_L002_R1_001.fastq.gz  1_S1_L002_R2_001.fastq.gz
+TrimmomaticPE: Started with arguments:
+ -threads 8 1_S1_L002_R1_001.fastq.gz 1_S1_L002_R2_001.fastq.gz trimmed-reads/1_S1_L002_R1_001.fastq.gz trimmed-reads/unpaired-1_S1_L002_R1_001.fastq.gz trimmed-reads/1_S1_L002_R2_001.fastq.gz trimmed-reads/unpaired-1_S1_L002_R2_001.fastq.gz ILLUMINACLIP:/home/genome/joseph7e/scripts/adapters.fa:2:30:10:8:true LEADING:3 TRAILING:3 SLIDINGWINDOW:4:10 MINLEN:36
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACTCCCGAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GACGCTGCCGACGATCTTACGCGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACACTGATATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCTATACATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCACTCAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACGGCTACATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACGTCCGCATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CTGAGCGGGCTGGCAAGGCAGACCGATCTCGTATGCCGTCTTCTGCTTG'
+Using Medium Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGC'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACTGACCAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATTAAAAAA'
+Using Medium Clipping Sequence: 'TCGTATGCCGTCTTCTGCTTGT'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACGCCAATATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCACGATATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACGTAGAGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACGGTAGCATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACTCGAAGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACTTAGGCATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCAGATCATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCTTGTAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACGAGTGGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACATTCCTTTATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACATCACGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCACCGGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACGCTCATGAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACTCGGCAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACGTGGCCTTATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACGTAGAGGAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACGTTTCGGAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACAAGAGGCAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACCGTACGTAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACCGAGGCTGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCCGTCCATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACGAGTGGATATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACACTGATATATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGTCGGACTGTAGAACTCTGAAC'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACGTCCGCACATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTCGTATGCCGTCTTCTGCTTGAAA'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACGCGTAGTAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACGGAGCTACATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACACTCGCTAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACATCTCAGGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCTAGCTATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACTCATTCATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACACTGAGCGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCAGGCGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACTAGCGCTCATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACATGCGCAGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACTACGCTGCATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACCGGAGCCTATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCTCAGAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACGTGAAAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACTCGACGTCATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACTGCAGCTAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACATGAGCATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACCGATCAGTATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACCCTAAGACATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GACGCTGCCGACGAATAGCCTTGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'GACGCTGCCGACGATCGCATAAGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'GACGCTGCCGACGATAAGGCTCGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACGTTTCGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACACAGTGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACAGTTCCATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CTGTCTCTTATACACATCTCCGAGCCCACGAGAC'
+Using Long Clipping Sequence: 'CTGTCTCTTATACACATCTCTGAGCGGGCTGGCAAGGC'
+Using Long Clipping Sequence: 'CTGATGGCGCGAGGGAGGCGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTAGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTCGTATGCCGTCTTCTGCTTG'
+Skipping duplicate Clipping Sequence: 'GACGCTGCCGACGATCTTACGCGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'GACGCTGCCGACGAACTCTAGGGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'GACGCTGCCGACGACTTAATAGGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'CTGTCTCTTATACACATCTCTGATGGCGCGAGGGAGGC'
+Skipping duplicate Clipping Sequence: 'CCGAGCCCACGAGACAAGAGGCAATCTCGTATGCCGTCTTCTGCTTG'
+Using Medium Clipping Sequence: 'CCACGGGAACGTGGTGGAATTC'
+Using Long Clipping Sequence: 'CTGTCTCTTATACACATCTGACGCTGCCGACGA'
+Skipping duplicate Clipping Sequence: 'CCGAGCCCACGAGACCGAGGCTGATCTCGTATGCCGTCTTCTGCTTG'
+Skipping duplicate Clipping Sequence: 'CCGAGCCCACGAGACGTAGAGGAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACCGATGTATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GACGCTGCCGACGACGGAGAGAGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACTTAGGCATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GACGCTGCCGACGAATTAGACGGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCCAACAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GACGCTGCCGACGACTAGTCGAGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'GACGCTGCCGACGAAGCTAGAAGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACTACAGCATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACACTTGAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACATGTCAGAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACGATCAGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACCCGTCCCGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACTGACCAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACGTGAAACGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACACAGTGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACGCCAATATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCAACTAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACCAGATCATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACAGGCAGAAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACCGTACTAGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACTAAGGCGAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACTAGCTTATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACGGCTACATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACCTTGTAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACAGTCAACAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACAGTTCCGTATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GACGCTGCCGACGATATGCAGTGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAAC'
+Using Long Clipping Sequence: 'GACGCTGCCGACGACTCCTTACGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'GACGCTGCCGACGAAGGCTTAGGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACTAATCGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GACGCTGCCGACGATACTCCTTGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACCTCTCTACATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACTAGGCATGATCTCGTATGCCGTCTTCTGCTTG'
+Skipping duplicate Clipping Sequence: 'CCGAGCCCACGAGACCGTACTAGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACGGACTCCTATCTCGTATGCCGTCTTCTGCTTG'
+Skipping duplicate Clipping Sequence: 'CCGAGCCCACGAGACTAAGGCGAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACTCCTGAGCATCTCGTATGCCGTCTTCTGCTTG'
+Skipping duplicate Clipping Sequence: 'CCGAGCCCACGAGACTCCTGAGCATCTCGTATGCCGTCTTCTGCTTG'
+Skipping duplicate Clipping Sequence: 'CCGAGCCCACGAGACAGGCAGAAATCTCGTATGCCGTCTTCTGCTTG'
+Skipping duplicate Clipping Sequence: 'CCGAGCCCACGAGACTAGGCATGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCAAAAGATCTCGTATGCCGTCTTCTGCTTG'
+Skipping duplicate Clipping Sequence: 'CCGAGCCCACGAGACGGACTCCTATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACCAGAGAGGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GACGCTGCCGACGAATAGAGAGGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Skipping duplicate Clipping Sequence: 'CCGAGCCCACGAGACCTCTCTACATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCATTTTATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'CCGAGCCCACGAGACGCTACGCTATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GACGCTGCCGACGAAGAGGATAGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCGTCGTGTAGGGA'
+Using Long Clipping Sequence: 'AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCTCAAGCAGAAGACGGCATACGAGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TCGGACTGTAGAACTCTGAACGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCACATCACGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCGGAATATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCATGGCATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACGACGACATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACACTTGAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACAGTCAAATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'AATGATACGGCGACCACCGAGATCTACACTCTTTCCCTACACGACGCTCTTCCGATCT'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCGATGTATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACATTCCTATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACGTGGCCATCTCGTATGCCGTCTTCTGCTTG'
+Skipping duplicate Clipping Sequence: 'GACGCTGCCGACGATACTCCTTGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Skipping duplicate Clipping Sequence: 'GACGCTGCCGACGAAGGCTTAGGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Skipping duplicate Clipping Sequence: 'GACGCTGCCGACGACTCCTTACGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Skipping duplicate Clipping Sequence: 'GACGCTGCCGACGATATGCAGTGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACATGTCAATCTCGTATGCCGTCTTCTGCTTG'
+Skipping duplicate Clipping Sequence: 'GACGCTGCCGACGAAGAGGATAGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'GACGCTGCCGACGATCTACTCTGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'GACGCTGCCGACGAGCGATCTAGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Skipping duplicate Clipping Sequence: 'GACGCTGCCGACGAATAGAGAGGTGTAGATCTCGGTGGTCGCCGTATCATT'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACCGTACGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACTAGCTTATCTCGTATGCCGTCTTCTGCTTG'
+Using Medium Clipping Sequence: 'CCTTGGCACCCGAGAATTCCA'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACTATAATATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'TGGAATTCTCGGGTGCCAAGGAACTCCAGTCACGATCAGATCTCGTATGCCGTCTTCTGCTTG'
+Using Long Clipping Sequence: 'GATCGGAAGAGCACACGTCTGAACTCCAGTCACATCACGATCTCGTATGCCGTCTTCTGCTTG'
+ILLUMINACLIP: Using 0 prefix pairs, 138 forward/reverse sequences, 0 forward only sequences, 0 reverse only sequences
+Quality encoding detected as phred33
+java.io.EOFException: Unexpected end of ZLIB input stream
+        at java.base/java.util.zip.InflaterInputStream.fill(InflaterInputStream.java:245)
+        at java.base/java.util.zip.InflaterInputStream.read(InflaterInputStream.java:159)
+        at java.base/java.util.zip.GZIPInputStream.read(GZIPInputStream.java:118)
+        at org.usadellab.trimmomatic.util.ConcatGZIPInputStream.read(ConcatGZIPInputStream.java:73)
+        at java.base/sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284)
+        at java.base/sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326)
+        at java.base/sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+        at java.base/java.io.InputStreamReader.read(InputStreamReader.java:185)
+        at java.base/java.io.BufferedReader.fill(BufferedReader.java:161)
+        at java.base/java.io.BufferedReader.readLine(BufferedReader.java:326)
+        at java.base/java.io.BufferedReader.readLine(BufferedReader.java:392)
+        at org.usadellab.trimmomatic.fastq.FastqParser.parseOne(FastqParser.java:85)
+        at org.usadellab.trimmomatic.fastq.FastqParser.next(FastqParser.java:179)
+        at org.usadellab.trimmomatic.threading.ParserWorker.run(ParserWorker.java:42)
+        at java.base/java.lang.Thread.run(Thread.java:834)
+Exception in thread "Thread-1" java.lang.RuntimeException: java.io.EOFException: Unexpected end of ZLIB input stream
+        at org.usadellab.trimmomatic.threading.ParserWorker.run(ParserWorker.java:56)
+        at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: java.io.EOFException: Unexpected end of ZLIB input stream
+        at java.base/java.util.zip.InflaterInputStream.fill(InflaterInputStream.java:245)
+        at java.base/java.util.zip.InflaterInputStream.read(InflaterInputStream.java:159)
+        at java.base/java.util.zip.GZIPInputStream.read(GZIPInputStream.java:118)
+        at org.usadellab.trimmomatic.util.ConcatGZIPInputStream.read(ConcatGZIPInputStream.java:73)
+        at java.base/sun.nio.cs.StreamDecoder.readBytes(StreamDecoder.java:284)
+        at java.base/sun.nio.cs.StreamDecoder.implRead(StreamDecoder.java:326)
+        at java.base/sun.nio.cs.StreamDecoder.read(StreamDecoder.java:178)
+        at java.base/java.io.InputStreamReader.read(InputStreamReader.java:185)
+        at java.base/java.io.BufferedReader.fill(BufferedReader.java:161)
+        at java.base/java.io.BufferedReader.readLine(BufferedReader.java:326)
+        at java.base/java.io.BufferedReader.readLine(BufferedReader.java:392)
+        at org.usadellab.trimmomatic.fastq.FastqParser.parseOne(FastqParser.java:85)
+        at org.usadellab.trimmomatic.fastq.FastqParser.next(FastqParser.java:179)
+        at org.usadellab.trimmomatic.threading.ParserWorker.run(ParserWorker.java:42)
+        ... 1 more
+Input Read Pairs: 1536000 Both Surviving: 1534153 (99.88%) Forward Only Surviving: 114 (0.01%) Reverse Only Surviving: 1638 (0.11%) Dropped: 95 (0.01%)
+TrimmomaticPE: Completed successfully
+
+### Run fastqc to compare
+base) kkg1010@ron:~/1_n2_kostrains$ mkdir fastqc_raw-reads
+(base) kkg1010@ron:~/1_n2_kostrains$ ls
+1_S1_L002_R1_001.fastq.gz  1_S1_L002_R2_001.fastq.gz  fastqc_raw-reads  trimmed-reads
+(base) kkg1010@ron:~/1_n2_kostrains$ fastqc 1_S1_L002_R1_001.fastq.gz  1_S1_L002_R2_001.fastq.gz -o fastqc_raw-reads
+Started analysis of 1_S1_L002_R1_001.fastq.gz
+Approx 5% complete for 1_S1_L002_R1_001.fastq.gz
+Approx 10% complete for 1_S1_L002_R1_001.fastq.gz
+Approx 15% complete for 1_S1_L002_R1_001.fastq.gz
+Approx 20% complete for 1_S1_L002_R1_001.fastq.gz
+Approx 25% complete for 1_S1_L002_R1_001.fastq.gz
+Approx 30% complete for 1_S1_L002_R1_001.fastq.gz
+Approx 35% complete for 1_S1_L002_R1_001.fastq.gz
+Approx 40% complete for 1_S1_L002_R1_001.fastq.gz
+Approx 45% complete for 1_S1_L002_R1_001.fastq.gz
+Approx 50% complete for 1_S1_L002_R1_001.fastq.gz
+Approx 55% complete for 1_S1_L002_R1_001.fastq.gz
+Approx 60% complete for 1_S1_L002_R1_001.fastq.gz
+Approx 65% complete for 1_S1_L002_R1_001.fastq.gz
+Approx 70% complete for 1_S1_L002_R1_001.fastq.gz
+Approx 75% complete for 1_S1_L002_R1_001.fastq.gz
+Approx 80% complete for 1_S1_L002_R1_001.fastq.gz
+Approx 85% complete for 1_S1_L002_R1_001.fastq.gz
+Approx 90% complete for 1_S1_L002_R1_001.fastq.gz
+Approx 95% complete for 1_S1_L002_R1_001.fastq.gz
+Analysis complete for 1_S1_L002_R1_001.fastq.gz
+
+Started analysis of 1_S1_L002_R2_001.fastq.gz
+Approx 5% complete for 1_S1_L002_R2_001.fastq.gz
+Approx 10% complete for 1_S1_L002_R2_001.fastq.gz
+Approx 15% complete for 1_S1_L002_R2_001.fastq.gz
+Approx 20% complete for 1_S1_L002_R2_001.fastq.gz
+Approx 25% complete for 1_S1_L002_R2_001.fastq.gz
+Approx 30% complete for 1_S1_L002_R2_001.fastq.gz
+Approx 35% complete for 1_S1_L002_R2_001.fastq.gz
+Approx 40% complete for 1_S1_L002_R2_001.fastq.gz
+Approx 45% complete for 1_S1_L002_R2_001.fastq.gz
+Approx 50% complete for 1_S1_L002_R2_001.fastq.gz
+Approx 55% complete for 1_S1_L002_R2_001.fastq.gz
+Approx 60% complete for 1_S1_L002_R2_001.fastq.gz
+Approx 65% complete for 1_S1_L002_R2_001.fastq.gz
+Approx 70% complete for 1_S1_L002_R2_001.fastq.gz
+Approx 75% complete for 1_S1_L002_R2_001.fastq.gz
+Approx 80% complete for 1_S1_L002_R2_001.fastq.gz
+Approx 85% complete for 1_S1_L002_R2_001.fastq.gz
+Approx 90% complete for 1_S1_L002_R2_001.fastq.gz
+Approx 95% complete for 1_S1_L002_R2_001.fastq.gz
+Analysis complete for 1_S1_L002_R2_001.fastq.gz
+
+## Map Reads to your assembly
+(base) kkg1010@ron:~/1_n2_kostrains$ bwa index ../GCF_000002985.6_WBcel235_genomic.fna
+[bwa_index] Pack FASTA... 0.66 sec
+[bwa_index] Construct BWT for the packed sequence...
+[BWTIncCreate] textLength=200572802, availableWord=26113028
+[BWTIncConstructFromPacked] 10 iterations done. 43074434 characters processed.
+[BWTIncConstructFromPacked] 20 iterations done. 79575970 characters processed.
+[BWTIncConstructFromPacked] 30 iterations done. 112014578 characters processed.
+[BWTIncConstructFromPacked] 40 iterations done. 140842098 characters processed.
+[BWTIncConstructFromPacked] 50 iterations done. 166460034 characters processed.
+[BWTIncConstructFromPacked] 60 iterations done. 189225266 characters processed.
+
+### Map the reads and construct a SAM file
+
+(base) kkg1010@ron:~/1_n2_kostrains$ bwa mem -t 24 ../GCF_000002985.6_WBcel235_genomic.fna ./trimmed-reads/1_S1_L002_R1_001.fastq.gz ./trimmed-reads/1_S1_L002_R2_001.fastq.gz > raw_mapped.sam
+[M::bwa_idx_load_from_disk] read 0 ALT contigs
+[M::process] read 987930 sequences (240000357 bp)...
+[M::process] read 987858 sequences (240000057 bp)...
+[M::mem_pestat] # candidate unique pairs for (FF, FR, RF, RR): (141, 422678, 19, 145)
+[M::mem_pestat] analyzing insert size distribution for orientation FF...
+[M::mem_pestat] (25, 50, 75) percentile: (242, 359, 487)
+[M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 977)
+[M::mem_pestat] mean and std.dev: (375.23, 183.87)
+[M::mem_pestat] low and high boundaries for proper pairs: (1, 1222)
+[M::mem_pestat] analyzing insert size distribution for orientation FR...
+[M::mem_pestat] (25, 50, 75) percentile: (285, 383, 503)
+[M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 939)
+[M::mem_pestat] mean and std.dev: (403.80, 158.99)
+[M::mem_pestat] low and high boundaries for proper pairs: (1, 1157)
+[M::mem_pestat] analyzing insert size distribution for orientation RF...
+[M::mem_pestat] (25, 50, 75) percentile: (148, 1556, 1895)
+[M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 5389)
+[M::mem_pestat] mean and std.dev: (930.88, 819.18)
+[M::mem_pestat] low and high boundaries for proper pairs: (1, 7136)
+[M::mem_pestat] analyzing insert size distribution for orientation RR...
+[M::mem_pestat] (25, 50, 75) percentile: (222, 333, 435)
+[M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 861)
+[M::mem_pestat] mean and std.dev: (335.61, 160.12)
+[M::mem_pestat] low and high boundaries for proper pairs: (1, 1074)
+[M::mem_pestat] skip orientation FF
+[M::mem_pestat] skip orientation RF
+[M::mem_pestat] skip orientation RR
+[M::mem_process_seqs] Processed 987930 reads in 648.604 CPU sec, 27.345 real sec
+[M::process] read 987660 sequences (240000035 bp)...
+[M::mem_pestat] # candidate unique pairs for (FF, FR, RF, RR): (168, 421770, 18, 121)
+[M::mem_pestat] analyzing insert size distribution for orientation FF...
+[M::mem_pestat] (25, 50, 75) percentile: (235, 325, 525)
+[M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 1105)
+[M::mem_pestat] mean and std.dev: (368.54, 200.74)
+[M::mem_pestat] low and high boundaries for proper pairs: (1, 1395)
+[M::mem_pestat] analyzing insert size distribution for orientation FR...
+[M::mem_pestat] (25, 50, 75) percentile: (284, 381, 500)
+[M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 932)
+[M::mem_pestat] mean and std.dev: (401.33, 155.99)
+[M::mem_pestat] low and high boundaries for proper pairs: (1, 1148)
+[M::mem_pestat] analyzing insert size distribution for orientation RF...
+[M::mem_pestat] (25, 50, 75) percentile: (91, 950, 1221)
+[M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 3481)
+[M::mem_pestat] mean and std.dev: (748.50, 755.47)
+[M::mem_pestat] low and high boundaries for proper pairs: (1, 4611)
+[M::mem_pestat] analyzing insert size distribution for orientation RR...
+[M::mem_pestat] (25, 50, 75) percentile: (216, 346, 482)
+[M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 1014)
+[M::mem_pestat] mean and std.dev: (352.21, 169.87)
+[M::mem_pestat] low and high boundaries for proper pairs: (1, 1280)
+[M::mem_pestat] skip orientation FF
+[M::mem_pestat] skip orientation RF
+[M::mem_pestat] skip orientation RR
+[M::mem_process_seqs] Processed 987858 reads in 696.618 CPU sec, 29.413 real sec
+[M::process] read 104858 sequences (25491608 bp)...
+[M::mem_pestat] # candidate unique pairs for (FF, FR, RF, RR): (172, 420202, 15, 131)
+[M::mem_pestat] analyzing insert size distribution for orientation FF...
+[M::mem_pestat] (25, 50, 75) percentile: (281, 396, 566)
+[M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 1136)
+[M::mem_pestat] mean and std.dev: (424.31, 194.02)
+[M::mem_pestat] low and high boundaries for proper pairs: (1, 1421)
+[M::mem_pestat] analyzing insert size distribution for orientation FR...
+[M::mem_pestat] (25, 50, 75) percentile: (283, 377, 490)
+[M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 904)
+[M::mem_pestat] mean and std.dev: (394.57, 149.29)
+[M::mem_pestat] low and high boundaries for proper pairs: (1, 1111)
+[M::mem_pestat] analyzing insert size distribution for orientation RF...
+[M::mem_pestat] (25, 50, 75) percentile: (372, 1227, 2836)
+[M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 7764)
+[M::mem_pestat] mean and std.dev: (1431.36, 1423.09)
+[M::mem_pestat] low and high boundaries for proper pairs: (1, 10228)
+[M::mem_pestat] analyzing insert size distribution for orientation RR...
+[M::mem_pestat] (25, 50, 75) percentile: (196, 313, 445)
+[M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 943)
+[M::mem_pestat] mean and std.dev: (315.89, 161.95)
+[M::mem_pestat] low and high boundaries for proper pairs: (1, 1192)
+[M::mem_pestat] skip orientation FF
+[M::mem_pestat] skip orientation RF
+[M::mem_pestat] skip orientation RR
+[M::mem_process_seqs] Processed 987660 reads in 734.389 CPU sec, 31.202 real sec
+[M::mem_pestat] # candidate unique pairs for (FF, FR, RF, RR): (22, 44460, 1, 17)
+[M::mem_pestat] analyzing insert size distribution for orientation FF...
+[M::mem_pestat] (25, 50, 75) percentile: (211, 405, 536)
+[M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 1186)
+[M::mem_pestat] mean and std.dev: (391.33, 192.13)
+[M::mem_pestat] low and high boundaries for proper pairs: (1, 1511)
+[M::mem_pestat] analyzing insert size distribution for orientation FR...
+[M::mem_pestat] (25, 50, 75) percentile: (280, 371, 478)
+[M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 874)
+[M::mem_pestat] mean and std.dev: (386.91, 143.17)
+[M::mem_pestat] low and high boundaries for proper pairs: (1, 1072)
+[M::mem_pestat] analyzing insert size distribution for orientation RR...
+[M::mem_pestat] (25, 50, 75) percentile: (225, 287, 391)
+[M::mem_pestat] low and high boundaries for computing mean and std.dev: (1, 723)
+[M::mem_pestat] mean and std.dev: (262.75, 118.29)
+[M::mem_pestat] low and high boundaries for proper pairs: (1, 889)
+[M::mem_pestat] skip orientation FF
+[M::mem_pestat] skip orientation RR
+[M::mem_process_seqs] Processed 104858 reads in 88.231 CPU sec, 3.646 real sec
+[main] Version: 0.7.17-r1188
+[main] CMD: bwa mem -t 24 ../GCF_000002985.6_WBcel235_genomic.fna ./trimmed-reads/1_S1_L002_R1_001.fastq.gz ./trimmed-reads/1_S1_L002_R2_001.fastq.gz
+[main] Real time: 96.317 sec; CPU: 2172.518 sec
+(base) kkg1010@ron:~/1_n2_kostrains$ ls
+1_S1_L002_R1_001.fastq.gz  1_S1_L002_R2_001.fastq.gz  fastqc_raw-reads  raw_mapped.sam  trimmed-reads
+(base) kkg1010@ron:~/1_n2_kostrains$ cd rclient_loop: send disconnect: Connection reset
+PS C:\Users\KRANTI\Desktop\kranti_811> ssh kkg1010@ron.sr.unh.edu
+kkg1010@ron.sr.unh.edu's password: 
+Permission denied, please try again.
+kkg1010@ron.sr.unh.edu's password: 
+Welcome to Ubuntu 20.04.4 LTS (GNU/Linux 5.4.0-81-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Tue 10 May 2022 09:13:31 AM EDT
+
+  System load:           24.62
+  Usage of /home:        88.4% of 43.66TB
+  Memory usage:          62%
+  Swap usage:            100%
+  Temperature:           73.0 C
+  Processes:             2120
+  Users logged in:       33
+  IPv4 address for eno1: 132.177.240.110
+  IPv6 address for eno1: 2606:4100:38a0:240:1a66:daff:fee7:acb4
+  IPv6 address for eno1: 2606:4100:38a0:240::110
+
+  => /tmp is using 88.4% of 43.66TB
+  => There are 3 zombie processes.
+
+ * Super-optimized for small spaces - read how we shrank the memory
+   footprint of MicroK8s to make it the smallest full K8s around.
+
+   https://ubuntu.com/blog/microk8s-memory-optimisation
+
+@SQ     SN:NC_003279.8  LN:15072434
+@SQ     SN:NC_003280.10 LN:15279421
+@SQ     SN:NC_003281.10 LN:13783801
+@SQ     SN:NC_003282.8  LN:17493829
+@SQ     SN:NC_003283.11 LN:20924180
+@SQ     SN:NC_003284.9  LN:17718942
+@SQ     SN:NC_001328.1  LN:13794
+@PG     ID:bwa  PN:bwa  VN:0.7.17-r1188 CL:bwa mem -t 24 ../GCF_000002985.6_WBcel235_genomic.fna ./trimmed-reads/1_S1_L002_R1_001.fastq.gz 
+./trimmed-reads/1_S1_L002_R2_001.fastq.gz
+A01346:32:HFMCNDRXY:2:2101:1777:1000    83      NC_003284.9     2834092 60      251M    =       2833961 -382    CATTCATAACTTGACAAAAAACCGGGTCGTTGCCCATCTCTGCTCCAAATGCCAATTCAGTCAACACAAACATTCTAAGAGCAGCTGAGCGTTGTGCAGGTGAGCATTTCACTAGGTCGGAAGGGTACAAATAATCACCTTTCATTTTATTACTTTAGAAACAAAAACTGTTTAAAATTAGGAAGACAAAGCATTGCATAATCTAGAAACAAAATGCAGTAAGCATAGAATATCAAGAAAAAATCCGGAAG     ,:,,:FFF:FFFF,FFF,F:,,FFF,FFF:F,FFFFF:F:F:FFFFFF:FFF:FFFFF:F:FFFFFFFF:F:FF:F,FFFF,FFFFFFF::F:FFFFFFFF:FFFFFFFFF:FFFFFFFFFFFFFFF,FFFFF,FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF,FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF:FFFF,     NM:i:4  MD:Z:2A10C11T224T0      MC:Z:251M       AS:i:237        XS:i:0 
+A01346:32:HFMCNDRXY:2:2101:1777:1000    163     NC_003284.9     2833961 60      251M    =       2834092 382     TATATTTTTTGGCTAAACTTGAGATGGTTCCAAGTCAGGAATGGGCGACGAATTTGCCAAAAAAGCCAAATGTTCTCCAAACGACAAACGACGAATTCGGCGAACATTTGCCGAGTACGGCAAAAATTGAACAATCATAACTTGCCAAAAAACCGGTTCGTTGCCCraw_mapped.sam@SQ     SN:NC_003279.8  LN:15072434
+@SQ     SN:NC_003280.10 LN:15279421
+@SQ     SN:NC_003281.10 LN:13783801
+@SQ     SN:NC_003282.8  LN:17493829
+@SQ     SN:NC_003283.11 LN:20924180
+@SQ     SN:NC_003284.9  LN:17718942
+@SQ     SN:NC_001328.1  LN:13794
+@PG     ID:bwa  PN:bwa  VN:0.7.17-r1188 CL:bwa mem -t 24 ../GCF_000002985.6_WBcel235_genomic.fna ./trimmed-reads/1_S1_L002_R1_001.fastq.gz 
+./trimmed-reads/1_S1_L002_R2_001.fastq.gz
+A01346:32:HFMCNDRXY:2:2101:1777:1000    83      NC_003284.9     2834092 60      251M    =       2833961 -382    CATTCATAACTTGACAAAAAACCGGGTCGTTGCCCATCTCTGCTCCAAATGCCAATTCAGTCAACACAAACATTCTAAGAGCAGCTGAGCGTTGTGCAGGTGAGCATTTCACTAGGTCGGAAGGGTACAAATAATCACCTTTCATTTTATTACTTTAGAAACAAAAACTGTTTAAAATTAGGAAGACAAAGCATTGCATAATCTAGAAACAAAATGCAGTAAGCATAGAATATCAAGAAAAAATCCGGAAG     ,:,,:FFF:FFFF,FFF,F:,,FFF,FFF:F,FFFFF:F:F:FFFFFF:FFF:FFFFF:F:FFFFFFFF:F:FF:F,FFFF,FFFFFFF::F:FFFFFFFF:FFFFFFFFF:FFFFFFFFFFFFFFF,FFFFF,FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF,FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF:FFFF,     NM:i:4  MD:Z:2A10C11T224T0      MC:Z:251M       AS:i:237        XS:i:0 
+A01346:32:HFMCNDRXY:2:2101:1777:1000    163     NC_003284.9     2833961 60      251M    =       2834092 382     TATATTTTTTGGCTAAACTTGAGATGGTTCCAAGTCAGGAATGGGCGACGAATTTGCCAAAAAAGCCAAATGTTCTCCAAACGACAAACGACGAATTCGGCGAACATTTGCCGAGTACGGCAAAAATTGAACAATCATAACTTGCCAAAAAACCGGTTCGTTGCCC
+ATCTCTGCTCCAAATGCCAAATCAGTCAACACAAACATTCTAAGAGCAGCTGAGCGTTGTGCAGGTGAGCATTTCACTAGGTCGG     FFFFFFFF:FFFFFFFFFFF:FFFFFFFFFFFF:FFFFFFFFFFFFFFF
+4 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+
+Construct a coverage table using samtools and other programs.
+base) kkg1010@ron:~/1_n2_kostrains$ samtools view -@ 24 -Sb  raw_mapped.sam  | samtools sort -@ 24 -o sorted_mapped.bam
+[bam_sort_core] merging from 0 files and 24 in-memory blocks...
+(base) kkg1010@ron:~/1_n2_kostrains$ samtools flagstat sorted_mapped.bam
+3144673 + 0 in total (QC-passed reads + QC-failed reads)
+0 + 0 secondary
+76367 + 0 supplementary
+0 + 0 duplicates
+3131491 + 0 mapped (99.58% : N/A)
+3068306 + 0 paired in sequencing
+1534153 + 0 read1
+1534153 + 0 read2
+2978336 + 0 properly paired (97.07% : N/A)
+3045484 + 0 with itself and mate mapped
+9640 + 0 singletons (0.31% : N/A)
+41850 + 0 with mate mapped to a different chr
+30466 + 0 with mate mapped to a different chr (mapQ>=5
+
+### Calculate per base coverage with bedtools
+
+(base) kkg1010@ron:~/1_n2_kostrains$ ls
+1_S1_L002_R1_001.fastq.gz  coverage.out        fastqc_raw-reads  sorted_mapped      sorted_mapped.bam.bai
+1_S1_L002_R2_001.fastq.gz  coverage_table.tsv  raw_mapped.sam    sorted_mapped.bam  trimmed-reads
+(base) kkg1010@ron:~/1_n2_kostrains$ bedtools genomecov -ibam sorted_mapped.bam > coverage.out
+(base) kkg1010@ron:~/1_n2_kostrains$ ls
+1_S1_L002_R1_001.fastq.gz  coverage.out      raw_mapped.sam  sorted_mapped.bam      trimmed-reads
+1_S1_L002_R2_001.fastq.gz  fastqc_raw-reads  sorted_mapped   sorted_mapped.bam.bai
+(base) kkg1010@ron:~/1_n2_kostrains$ less coverage.out
+(base) kkg1010@ron:~/1_n2_kostrains$ (base) kkg1010@ron:~/1_n2_kostrains$
+NC_003279.8     0       173452  15072434        0.0115079
+NC_003279.8     1       448705  15072434        0.0297699
+NC_003279.8     2       891828  15072434        0.0591695
+NC_003279.8     3       1292804 15072434        0.0857727
+NC_003279.8     4       1602585 15072434        0.106326
+NC_003279.8     5       1759873 15072434        0.116761
+NC_003279.8     6       1754549 15072434        0.116408
+NC_003279.8     7       1618669 15072434        0.107393
+NC_003279.8     8       1393796 15072434        0.0924732
+NC_003279.8     9       1133946 15072434        0.0752331
+NC_003279.8     10      876022  15072434        0.0581208
+NC_003279.8     11      645540  15072434        0.0428292
+NC_003279.8     12      467348  15072434        0.0310068
+NC_003279.8     13      326575  15072434        0.021667
+NC_003279.8     14      222378  15072434        0.014754
+NC_003279.8     15      146765  15072434        0.00973731
+
+(
