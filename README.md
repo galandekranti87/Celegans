@@ -89,6 +89,9 @@ samtools flagstat sorted_mapped.bam
 #### Calculate per base coverage with bedtools,index the new bam file-samtools index sorted_mapped.bam
 bedtools genomecov -ibam sorted_mapped.bam > coverage.out
 
+# I ran into this issue
+I couldent analyze another sample because while trimming, programme was getting disconnected from server. I tried 4-5 times, every time it was getting disconnected after running around 3 hours. I also tried Wildtype N2 strain just to compare with pde1 ko strain but while trimmimg again it was getting disconnected. I tried screen command and to reattach screen -r command but is also didnt work.
+
 ## Fastqc report
 
 ## For Sample_1 Figure.1
