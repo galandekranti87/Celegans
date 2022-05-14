@@ -92,16 +92,16 @@ bedtools genomecov -ibam sorted_mapped.bam > coverage.out
 ## I ran into this issue
 I couldent analyze another sample because while trimming, programme was getting disconnected from server. I tried 4-5 times, every time it was getting disconnected after running around 3 hours. I also tried Wildtype N2 strain just to compare with pde1 ko strain but while trimmimg again it was getting disconnected. I tried screen command and to reattach screen -r command but is also didnt work.
 
-## Fastqc report
+## Fastqc report:
 
-## For Sample_1 Figure.1
+## For Sample_1: Figure.1
 
 ![Raw reads vs Trimmed reads](https://user-images.githubusercontent.com/103779987/168401752-a42327e9-10a0-4d14-bf7e-16e72eca3163.JPG)
 Figure.1 FASTQC programmed used the input is fastq file(s) and the output is an html file with figures. The graph visualizes our average read qualities
 
 file:///C:/Users/KRANTI/Desktop/c%20elegans%20trimmed%20graph%20to%20compare/trimmed-reads/Trimmed%20Reads%20-%201_S1_L002_R2_001_fastqc.html#M1
 
-## Comapared fastqc and trimmomatic Figure 2
+## Comapared fastqc and trimmomatic:Figure.2
 Noticed that the fastqc report 'failed' for adapter content. Trimmomatic programme used to remove the adapters with Joe's wrraper script
 
 ![Adaptor content](https://user-images.githubusercontent.com/103779987/168402197-1efcbe07-83c8-42a5-9605-b35b858e2f72.JPG)
@@ -114,7 +114,7 @@ Figure .3
 
 I used IGV to visualize the data ( gene annotations, and per sample coverage profiles). To see the gene location I have uploaded reference genome. general feature format (gff), .bam and bam.bai files. Samples 1 had a pde-1 knockout that resulted in ~0X coverage. fFrom estimated length start and stop deletion length 7336bp deleted.
 
-## Coverage analysis
+## Coverage analysis:
  
 ##### NC_003279.8        0          173452            15072434           0.0115079
 
