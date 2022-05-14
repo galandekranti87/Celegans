@@ -77,17 +77,17 @@ bedtools genomecov -ibam sorted_mapped.bam > coverage.out
 
 ## Fastqc report
 
-## For Sample_1
+## For Sample_1 Figure.1
 
 ![Raw reads vs Trimmed reads](https://user-images.githubusercontent.com/103779987/168401752-a42327e9-10a0-4d14-bf7e-16e72eca3163.JPG)
-Figure.1 Compared raw reads and 
+Figure.1 FASTQC programmed used the input is fastq file(s) and the output is an html file with figures. The graph visualizes our average read qualities 
+file:///C:/Users/KRANTI/Desktop/c%20elegans%20trimmed%20graph%20to%20compare/trimmed-reads/Trimmed%20Reads%20-%201_S1_L002_R2_001_fastqc.html#M1
 
-
-!
-## Comapared fastqc and trimmomatic
+## Comapared fastqc and trimmomatic Figure 2
 Noticed that the fastqc report 'failed' for adapter content. Trimmomatic programme used to remove the adapters with Joe's wrraper script
 
 ![Adaptor content](https://user-images.githubusercontent.com/103779987/168402197-1efcbe07-83c8-42a5-9605-b35b858e2f72.JPG)
+Figure 2:
 
 # Findings
 <img width="960" alt="1_ko_project" src="https://user-images.githubusercontent.com/103779987/168190781-29b67e93-cb2a-4552-82d1-d857c2017ecb.PNG">
