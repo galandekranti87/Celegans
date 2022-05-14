@@ -87,8 +87,7 @@ file:///C:/Users/KRANTI/Desktop/c%20elegans%20trimmed%20graph%20to%20compare/tri
 Noticed that the fastqc report 'failed' for adapter content. Trimmomatic programme used to remove the adapters with Joe's wrraper script
 
 ![Adaptor content](https://user-images.githubusercontent.com/103779987/168402197-1efcbe07-83c8-42a5-9605-b35b858e2f72.JPG)
-Figure 2:
-
+Figure 2: The Trimmomtic program used to trim low quality bases and to remove the adapters. The input is the raw forward and reverse reads and the output is new trimmed fastq files
 # Findings
 <img width="960" alt="1_ko_project" src="https://user-images.githubusercontent.com/103779987/168190781-29b67e93-cb2a-4552-82d1-d857c2017ecb.PNG">
 Figure .3
