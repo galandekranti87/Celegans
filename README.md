@@ -53,14 +53,17 @@ more /usr/local/bin/trim_scriptV2.sh
 FORWARD=$1
 REVERSE=$2
 ADAPTERS='/home/genome/joseph7e/scripts/adapters.fa'
+
 mkdir trimmed-reads/
+
 o_for="$(basename $FORWARD)"
 o_rev="$(basename $REVERSE)"
+
 trimmomatic PE -threads 8 $FORWARD $REVERSE\
-    trimmed-reads/$o_for trimmed-reads/unpaired-$o_for\
-    trimmed-reads/$o_rev trimmed-reads/unpaired-$o_rev\
-    ILLUMINACLIP:$ADAPTERS:2:30:10:8:true\
-    LEADING:3 TRAILING:3\
+trimmed-reads/$o_for trimmed-reads/unpaired-$o_for\
+trimmed-reads/$o_rev trimmed-reads/unpaired-$o_rev\
+ILLUMINACLIP:$ADAPTERS:2:30:10:8:true\
+LEADING:3 TRAILING:3\
 
 #### Run fastqc to compare with new trimmed reads to compare with the original html and the new one to see the differences (Figure.1)
 -fastqc 1_S1_L002_R1_001.fastq.gz  1_S1_L002_R2_001.fastq.gz -o fastqc_raw-reads
